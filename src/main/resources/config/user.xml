@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mappers/person.xml -->
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happyhouse.dao.MemberDao"> <!-- mybatis는 namespace필수!! -->
+	<select id="search" parameterType="string" 	resultType="Member">
+   		select * from member where userid = #{userid}
+   </select>
+   
+   <insert id="insert">
+   		insert into member(userid, userpwd, username, email, tel, isadmin)
+   		values (#{userid},#{userpwd},#{username},#{email},#{tel},#{isadmin})
+   </insert>
+   
+	<delete id="delete" parameterType="string">
+		delete from member where userid=#{userid}
+	</delete>	
+	
+	<update id="update" parameterType="Member">
+		update	member 
+			set	  userpwd=#{userpwd}
+				, username=#{username}
+				, email=#{email}
+				, tel=#{tel}
+				, isadmin=#{isadmin}
+		where userid=#{userid}
+	</update>
+	
+	<select id="listMember"		parameterType="string"	resultType="Member">
+		select * from member
+		<where>
+			<if test=" word != null">
+				<choose>
+					<when test=" key == 'id' ">
+						id = #{word}
+					</when>
+					<when test=" key == 'title' ">
+						title like concat('%',#{word},'%')
+					</when>
+					<when test=" key == 'contents' ">
+						contents like concat('%',#{word},'%')
+					</when>
+				</choose>
+			</if>
+		</where>
+<!-- 		order by no desc limit #{start} , #{interval} -->
+	</select>
+	
+	<select id="searchAll" resultType="Member">
+		select * from member
+	</select>
+</mapper>
