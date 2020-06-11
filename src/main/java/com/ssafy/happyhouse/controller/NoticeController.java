@@ -22,6 +22,10 @@ public class NoticeController {
 		return mav;
 	}
 	
+	@GetMapping("qna")
+	public String qnaTap() {
+		return "qna/qna";
+	}
 	@GetMapping("noticelist")
 	 public String boardList( Model model) {
 		String key= (String)model.getAttribute("key");

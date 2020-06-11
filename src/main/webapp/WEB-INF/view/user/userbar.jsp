@@ -32,8 +32,8 @@ li{
 			<h1><a href="#">Happy House</a></h1>
 		<c:choose>
 			<c:when test="${empty userinfo}">
-				<button type="button" id="joinBtn" onclick="document.location.href = 'mvjoin';">회원가입</button>
-				<button type="button" id="loginBtn" onclick="document.location.href = 'mvlogin';">로그인</button>
+				<button type="button" id="joinBtn" onclick="document.location.href = '${root}/mvjoin';">회원가입</button>
+				<button type="button" id="loginBtn" onclick="document.location.href = '${root}/mvlogin';">로그인</button>
 			</c:when>
 			<c:otherwise>
 			<strong>${userinfo.username}(${userinfo.userid})</strong>님 환영합니다.
@@ -54,7 +54,8 @@ li{
 			<ul>
 				<li class="active"><a href="${root}" accesskey="1" title="">홈페이지</a></li>
 				<li class=""><a href="noticelist?key=&word=" accesskey="2" title="">공지사항</a></li>
-				<li class=""><a href="#" accesskey="3" title="">오늘의 뉴스</a></li>
+				<li class=""><a href="qna" accesskey="3" title="">Q&A</a></li>
+				<li class=""><a href="#" accesskey="4" title="">오늘의 뉴스</a></li>
 			</ul>
 		</div>
 		<script>

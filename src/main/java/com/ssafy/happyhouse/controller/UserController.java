@@ -8,17 +8,18 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ssafy.happyhouse.dto.Member;
 import com.ssafy.happyhouse.service.MemberService;
 
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @Controller
 public class UserController {
 	@Autowired
@@ -95,7 +96,7 @@ public class UserController {
 	public String modifyMember(Member member, Model model, HttpSession session) {
 		Member curUser = (Member) session.getAttribute("userinfo");
 		member.setUserid(curUser.getUserid());
-		
+
 //		System.out.println("수정 전 id : "+member.getUserid());
 		service.update(member);
 		session.setAttribute("userinfo", member);//세션 멤버정보 갱신
@@ -125,6 +126,17 @@ public class UserController {
 			map.put("idExist", true);
 		}
 		System.out.println(map.get("idExist"));
+		return map;
+	}
+	
+	//현재 로그인 정보 리턴
+	@GetMapping("userinfo")
+	public @ResponseBody HashMap<String, Member> userInfo(HttpSession session){
+		HashMap<String, Member> map = new HashMap<String, Member>();
+		Member curUser = (Member) session.getAttribute("userinfo");
+		
+		map.put("curUser", curUser);
+
 		return map;
 	}
 	

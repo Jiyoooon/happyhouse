@@ -18,6 +18,7 @@
 	  <mapper resource="config/houseInfo.xml"/>
 	  <mapper resource="config/notice.xml"/>
 	  <mapper resource="config/user.xml"/>
+	  <mapper resource="config/qna.xml"/>
    </mappers>
 </configuration>
 
