@@ -37,14 +37,19 @@ public class QnAController {
 
 	@Autowired
 	private QnAService qnaService;
-
+	
     @ApiOperation(value = "모든 QnA 정보를 반환한다.", response = List.class)
 	@GetMapping
 	public ResponseEntity<List<QnA>> retrieveBoard() throws Exception {
 		logger.debug("retrieveQnA - 호출");
 		return new ResponseEntity<List<QnA>>(qnaService.retrieveQnA(), HttpStatus.OK);
 	}
-
+    @ApiOperation(value="로그인 정보 반환 ", response=List.class)
+    @GetMapping("userinfo")
+    public ResponseEntity<Member> returnUserinfo(HttpSession session) throws Exception{
+    	logger.debug("returnUserInfo - 호출");
+    	return new ResponseEntity<Member>((Member)session.getAttribute("userinfo"),HttpStatus.OK);
+    }
     @ApiOperation(value = "글번호에 해당하는 QnA 정보를 반환한다.", response = QnA.class)    
 	@GetMapping("{qnaNo}")
 	public ResponseEntity<QnA> selectQnAByNo(@PathVariable int qnaNo) {
@@ -57,9 +62,7 @@ public class QnAController {
 	public ResponseEntity<String> insertQnA(@RequestBody QnA qna,HttpSession session) {
 		logger.debug("insertQnA - 호출");
 		Member member = (Member) session.getAttribute("userinfo");
-		//qna.setQna_userid(member.getUserid());
-		qna.setQna_userid("ganzii");
-		System.out.println(qna);
+		qna.setQna_userid(member.getUserid());
 		if (qnaService.insertQnA(qna)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
@@ -71,7 +74,9 @@ public class QnAController {
 	public ResponseEntity<String> updateQnA(@RequestBody QnA qna) {
 		logger.debug("updateQnA - 호출");
 		logger.debug("" + qna);
-		
+//		System.out.println(qna.toString());
+//		System.out.println("----------------------");
+//		System.out.println(qnaService.updateQnA(qna));
 		if (qnaService.updateQnA(qna)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}

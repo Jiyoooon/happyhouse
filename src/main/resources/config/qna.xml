@@ -27,14 +27,14 @@
 		)
 	</insert>
 	
-	<!-- 게시글 수정, 답글 추가 -->
+	<!-- 게시글 수정 -->
 	<update id="updateQnA" parameterType="qna">
 		update qna_board 
 		   set qna_title = #{qna_title}, 
 		   	   qna_content = #{qna_content}, 
 		   	   qna_userid = #{qna_userid},
 		   	   reply_content = #{reply_content},
-		   	   reply_datetime = #{reply_datetime},
+<!-- 		   	   reply_datetime=#{reply_datetime}, -->
 		   	   reply_userid = #{reply_userid}
 		 where qna_no = #{qna_no}
 	</update>
@@ -47,3 +47,4 @@
 	</delete>
 
 </mapper>
+

@@ -18,9 +18,9 @@ public class MemberServiceImp implements MemberService {
 	private MemberDao dao;
 	
 	/** id에 해당하는 회원 정보를 추출하는 기능 */
-	public Member search(String id) {
+	public Member search(String userid) {
 		try {
-			return dao.search(id);
+			return dao.search(userid);
 		} catch (SQLException e) {
 			throw new HappyHouseException("회원 상세정보 조회 중 오류 발생");
 		}

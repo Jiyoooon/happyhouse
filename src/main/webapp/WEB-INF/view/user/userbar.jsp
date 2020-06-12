@@ -39,11 +39,11 @@ li{
 			<strong>${userinfo.username}(${userinfo.userid})</strong>님 환영합니다.
 				<c:choose>
 				    <c:when test="${userinfo.userid eq 'admin' }">
-					<button type="button" id="mypageBtn" onclick="document.location.href = '${root}/memberlist&key=&word=';">회원정보조회</button>
+					<button type="button" id="mypageBtn" onclick="document.location.href = '${root}/memberlist?key=&word=';">회원정보조회</button>
 					<button type="button" id="logoutBtn" onclick="document.location.href = '${root}/logout';">로그아웃</button>
 					</c:when>
 					<c:otherwise>
-					<button type="button" id="mypageBtn" onclick="document.location.href = '${root}/mypage';">회원정보</button>
+					<button type="button" id="mypageBtn" onclick="document.location.href = '${root}/mypage';">마이페이지</button>
 					<button type="button" id="logoutBtn" onclick="document.location.href = '${root}/logout';">로그아웃</button>
 					</c:otherwise>
 				</c:choose>
@@ -53,8 +53,8 @@ li{
 		<div id="menu">
 			<ul>
 				<li class="active"><a href="${root}" accesskey="1" title="">홈페이지</a></li>
-				<li class=""><a href="noticelist?key=&word=" accesskey="2" title="">공지사항</a></li>
-				<li class=""><a href="qna" accesskey="3" title="">Q&A</a></li>
+				<li class=""><a href="${root}/noticelist?key=&word=" accesskey="2" title="">공지사항</a></li>
+				<li class=""><a href="${root}/qna" accesskey="3" title="">Q&A</a></li>
 				<li class=""><a href="#" accesskey="4" title="">오늘의 뉴스</a></li>
 			</ul>
 		</div>

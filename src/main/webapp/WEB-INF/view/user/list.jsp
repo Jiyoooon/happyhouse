@@ -5,7 +5,7 @@
 <c:set var="root" value="${pageContext.request.contextPath}"/>
 
 <c:if test="${userinfo == null}">
-	<c:redirect url="/main.do"/>
+	<c:redirect url="${root}"/>
 </c:if>
 
 <c:if test="${userinfo != null}">
@@ -25,13 +25,14 @@
 			if(document.getElementById("word").value == "") {
 				alert("모든 목록 조회!!");
 			}
-			document.getElementById("searchform").action = "${root}/user.do";
+			document.getElementById("searchform").action = "${root}/memberlist";
 			document.getElementById("searchform").submit();
+// 			document.location.href = "${root}/memberlist";
 		}
 		</script>
 	</head>
 	<body>	
-	 <%@ include file="/user/userbar.jsp" %>
+	 <%@ include file="userbar.jsp" %>
 	<div class="wrapper" align="center">
 	  <div class="col-lg-8" align="center">
 	  <h2>관리자 페이지</h2>
@@ -44,14 +45,13 @@
 <!-- 	  </table> -->
 <%-- 	  </c:if> --%>
 	  <form id="searchform" method="get" class="form-inline" action="">
-	  <input type="hidden" name="act" id="act" value="memberlist">
+<!-- 	  <input type="hidden" name="act" id="act" value="memberlist"> -->
 	  <table class="table table-borderless">
 	  	<tr>
 	  		<td align="right">
 		  	  <select class="form-control" name="key" id="key">
 			    <option value="userid" selected="selected">아이디</option>
 			    <option value="username">이름</option>
-			    <option value="address">아이디</option>
 			  </select>
 			  <input type="text" class="form-control" placeholder="검색어 입력." name="word" id="word">
 			  <button type="button" class="btn btn-primary" onclick="javascript:searchMember();">검색</button>
@@ -87,7 +87,7 @@
 	  </c:if>
 	  </div>
 	</div>
-	 <%@ include file="/user/footer.jsp" %>
+	 <%@ include file="footer.jsp" %>
 	</body>
 </html>
 </c:if>

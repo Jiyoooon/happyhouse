@@ -1,6 +1,5 @@
 package com.ssafy.happyhouse.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +33,7 @@ public class QnAServiceImpl implements QnAService {
 	@Override
 	@Transactional
 	public boolean updateQnA(QnA qna) {
-		if(qna.getReply_userid() != null && qna.getReply_userid() != "") {
-			qna.setReply_datetime(new Date());
-		}
+//		System.out.println(dao.updateQnA(qna));
 		return dao.updateQnA(qna)==1;
 	}
 

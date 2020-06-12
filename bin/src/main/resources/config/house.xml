@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssafy.happyhouse.dao.HouseDao">
+	<select id="searchDealByNo"		parameterType="int"		resultType="HouseDeal">
+		select	no, dong, aptName, code, dealAmount
+				, buildYear, dealMonth, dealDay
+				, area, floor, jibun, type, rentMoney
+		from 	housedeal
+		where 	no = #{no}
+	</select>
+	
+	<select id="searchSido"		resultType="SidoCode">
+		select 	left(sido_code,2) as sido_code, sido_name
+		from 	sidocode
+		order 	by sido_code
+	</select>
+	
+	<select id="searchGugun"	parameterType="string"		resultType="SidoCode">
+		select 	left(gugun_code,5) as gugun_code, gugun_name
+		from 	guguncode
+		where 	left(gugun_code,2) = #{sido}
+		order 	by gugun_code
+	</select>
+	
+	<select id="searchDong"		parameterType="string"		resultType="HouseInfo">
+		select 	distinct dong, code
+		from 	houseinfo
+		where 	code = #{gugun}
+		order 	by dong
+	</select>
+	
+	<select id="searchHouseInfos"	parameterType="string"	resultType="HouseInfo">
+		select 		no, AptName, jibun, lat, lng, buildYear
+		from		houseinfo 
+		where 		dong = #{dong}
+		order by	AptName
+	</select>
+	
+	<select id="searchDeals"		parameterType="HouseInfoSearch"	resultType="HouseDeal">
+		select	  no, dealAmount, area, type
+				, dealYear, dealMonth, dealDay
+		from	housedeal
+		where	trim(dong) = #{dong}
+			and code = #{code}
+			and trim(aptname) = #{aptName}
+		order by dealAmount
+	</select>
+</mapper>

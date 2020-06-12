@@ -24,19 +24,19 @@
 		alert("내용 입력!!!!");
 		return;
 	} else {
-	  	document.getElementById("writeform").action = "${root}/notice.do";
+		document.getElementById("writeform").action = "${root}/noticesave";
 	  	document.getElementById("writeform").submit();
 	}
   }
   </script>
 </head>
 <body>
-	<%@ include file="/user/userbar.jsp" %>
+	<%@ include file="../user/userbar.jsp" %>
 <div class="wrapper" align="center">
 	<div class="col-lg-6" align="center">
 		<h2>공지사항 글쓰기</h2>
 		<form id="writeform" method="post" action="">
-		<input type="hidden" name="act" id="act" value="write">
+		<input type="hidden" name="act" id="act" value="noticesave">
 			<div class="form-group" align="left">
 				<label for="subject">제목:</label>
 				<input type="text" class="form-control" id="subject" name="subject">
@@ -51,6 +51,6 @@
 	</div>
 </div>
 
-	<%@ include file="/user/footer.jsp" %>
+	<%@ include file="../user/footer.jsp" %>
 </body>
 </html>

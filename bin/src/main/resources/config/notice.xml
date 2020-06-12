@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mappers/person.xml -->
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happyhouse.dao.NoticeDao"> <!-- mybatis는 namespace필수!! -->
+   	<insert id = "writeNotice" parameterType ="NoticeDto">
+   		insert into
+   		noticelist (bookno, userid, username, subject, context, looked , date)
+   		values (#{bookno},#{userid},#{username},#{subject},#{context},#{looked},now())
+   	</insert>
+   <update id="modifyNotice" parameterType="NoticeDto">
+   		update noticelist set   subject = #{subject},
+   							context = #{context}
+   		where bookno = #{bookno}
+   </update>
+   <delete id="deleteNotice" parameterType="list">
+   		delete from noticelist where bookno=#{bookno} 
+   </delete>
+   <select id="getNotice" parameterType="string" 	resultType="NoticeDto">
+   		select bookno, userid, username, subject, context, looked, date 
+   		from noticelist 
+   		where bookno = #{bookno}
+   </select>
+   
+   <select id="listNotice"		parameterType="string"	resultType="NoticeDto">
+		select * from noticelist
+		<where>
+			<if test=" word != null">
+				<choose>
+					<when test=" key == 'id' ">
+						id = #{word}
+					</when>
+					<when test=" key == 'title' ">
+						title like concat('%',#{word},'%')
+					</when>
+					<when test=" key == 'contents' ">
+						contents like concat('%',#{word},'%')
+					</when>
+				</choose>
+			</if>
+		</where>
+<!-- 		order by no desc limit #{start} , #{interval} -->
+	</select>
+	
+</mapper>    
+    
+    
+    
+    
+    
+    

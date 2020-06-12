@@ -18,13 +18,9 @@
 	</delete>	
 	
 	<update id="update" parameterType="Member">
-		update	member 
-			set	  userpwd=#{userpwd}
-				, username=#{username}
-				, email=#{email}
-				, tel=#{tel}
-				, isadmin=#{isadmin}
-		where userid=#{userid}
+		update member set userpwd=#{userpwd}, username=#{username},
+						email=#{email}, tel=#{tel}, isadmin=#{isadmin}
+					where userid=#{userid}
 	</update>
 	
 	<select id="listMember"		parameterType="string"	resultType="Member">
@@ -32,14 +28,11 @@
 		<where>
 			<if test=" word != null">
 				<choose>
-					<when test=" key == 'id' ">
-						id = #{word}
+					<when test=" key == 'userid' ">
+						userid = #{word}
 					</when>
-					<when test=" key == 'title' ">
-						title like concat('%',#{word},'%')
-					</when>
-					<when test=" key == 'contents' ">
-						contents like concat('%',#{word},'%')
+					<when test=" key == 'username' ">
+						username like concat('%',#{word},'%')
 					</when>
 				</choose>
 			</if>

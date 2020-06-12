@@ -10,16 +10,15 @@
    		values (#{bookno},#{userid},#{username},#{subject},#{context},#{looked},now())
    	</insert>
    <update id="modifyNotice" parameterType="NoticeDto">
-   		update noticelist set   subject = #{subject},
-   							context = #{context}
+   		update noticelist set subject = #{subject},
+   								context = #{context}
    		where bookno = #{bookno}
    </update>
-   <delete id="deleteNotice" parameterType="list">
+   <delete id="deleteNotice" parameterType="int">
    		delete from noticelist where bookno=#{bookno} 
    </delete>
-   <select id="getNotice" parameterType="string" 	resultType="NoticeDto">
-   		select bookno, userid, username, subject, context, looked, date 
-   		from noticelist 
+   <select id="getNotice" parameterType="int" 	resultType="NoticeDto">
+   		select * from noticelist 
    		where bookno = #{bookno}
    </select>
    
@@ -28,14 +27,14 @@
 		<where>
 			<if test=" word != null">
 				<choose>
-					<when test=" key == 'id' ">
-						id = #{word}
+					<when test=" key == 'userid' ">
+						userid = #{word}
 					</when>
-					<when test=" key == 'title' ">
-						title like concat('%',#{word},'%')
+					<when test=" key == 'bookno' ">
+						bookno like concat('%',#{word},'%')
 					</when>
-					<when test=" key == 'contents' ">
-						contents like concat('%',#{word},'%')
+					<when test=" key == 'subject' ">
+						subject like concat('%',#{word},'%')
 					</when>
 				</choose>
 			</if>

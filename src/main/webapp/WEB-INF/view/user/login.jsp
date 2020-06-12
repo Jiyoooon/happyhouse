@@ -28,6 +28,9 @@
 function moveJoin() {
 	document.location.href = "mvjoin";
 }	
+function moveSearchpw() {
+	document.location.href = "${root}/mvsearchpw";
+}	
 </script>
 </head>
 <body>
@@ -55,6 +58,7 @@ function moveJoin() {
 			<div class="form-group" align="center">
 				<input type="submit" class="btn btn-warning" value="로그인">
 				<button type="button" class="btn btn-primary" onclick="javascript:moveJoin();">회원가입</button>
+				<button type="button" class="btn btn-warning" onclick="javascript:moveSearchpw();">비밀번호찾기</button>
 			</div>
 		</form>
 	</div>

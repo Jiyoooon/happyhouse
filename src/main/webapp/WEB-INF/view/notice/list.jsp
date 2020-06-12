@@ -21,19 +21,20 @@
 		<script type="text/javascript">
 
 		function movewrite() {
-			location.href="${root}/notice.do?act=movewrite";
+			location.href="movewrite";
 		}
 		function searchNotice() {
 			if(document.getElementById("word").value == "") {
 				alert("모든 목록 조회!!");
 			}
-			document.getElementById("searchform").action = "${root}/notice.do";
+			document.getElementById("searchform").action = "${root}/noticelist";
 			document.getElementById("searchform").submit();
+// 			document.location.href = "noticelist";
 		}
 		</script>
 	</head>
 	<body>	
-		<%@ include file="/user/userbar.jsp" %>
+		<%@ include file="../user/userbar.jsp" %>
 	<div class=wrapper align="center">
 	  <div class="col-lg-8" align="center">
 	  <h2>공지사항</h2>
@@ -46,7 +47,7 @@
 	  </table>
 	  </c:if>
 	  <form id="searchform" method="get" class="form-inline" action="">
-	  <input type="hidden" name="act" id="act" value="noticelist">
+<!-- 	  <input type="hidden" name="act" id="act" value="noticelist"> -->
 	  <table class="table table-borderless">
 	  	<tr>
 	  		<td align="right">
@@ -78,8 +79,8 @@
 	      <c:if test="${userinfo.userid == notice.userid}">
 	      <tr>
 	        <td colspan="2">
-			<a href="${root}/notice.do?act=mvmodify&bookno=${notice.bookno}">수정</a>
-			<a href="${root}/notice.do?act=delete&bookno=${notice.bookno}">삭제</a>
+			<a href="${root}/mvnoticemodify?bookno=${notice.bookno}">수정</a>
+			<a href="${root}/noticedelete?bookno=${notice.bookno}">삭제</a>
 			</td>
 	      </tr>
 	      </c:if>
@@ -98,6 +99,6 @@
 	  </c:if>
 	  </div>
 	</div>
-		<%@ include file="/user/footer.jsp" %>
+		<%@ include file="../user/footer.jsp" %>
 	</body>
 </html>

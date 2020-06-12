@@ -24,20 +24,19 @@
 		alert("내용 입력!!!!");
 		return;
 	} else {
-	  	document.getElementById("writeform").action = "${root}/notice.do";
-	  	document.getElementById("writeform").submit();
+		$("#writeform").attr("action", "${root}/noticemodify").submit();
 	}
   }
   </script>
 </head>
 <body>
 
-	<%@ include file="/user/userbar.jsp" %>
+	<%@ include file="../user/userbar.jsp" %>
 <div class="wrapper" align="center">
 	<div class="col-lg-6" align="center">
 		<h2>방명록 글수정</h2>
 		<form id="writeform" method="post" action="">
-		<input type="hidden" name="act" id="act" value="modify">
+		<input type="hidden" name="act" id="act" value="noticemodify">
 		<input type="hidden" name="bookno" id="bookno" value="${notice.bookno}">
 			<div class="form-group" align="left">
 				<label for="subject">제목:</label>
@@ -52,6 +51,6 @@
 		</form>
 	</div>
 </div>
-	<%@ include file="/user/footer.jsp" %>
+	<%@ include file="../user/footer.jsp" %>
 </body>
 </html>

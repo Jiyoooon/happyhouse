@@ -3,6 +3,7 @@ package com.ssafy.happyhouse.controller;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +14,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ssafy.happyhouse.dto.Member;
 import com.ssafy.happyhouse.service.MemberService;
-
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @Controller
 public class UserController {
@@ -41,12 +42,12 @@ public class UserController {
 	public String joinform() {
 		return "user/join";
 	}
-	@GetMapping("mypage")
+	@RequestMapping("mypage")
 	public String mypage(Model model) {
 		model.addAttribute("disable", true);//수정 불가
 		return "user/mypage";
 	}
-	@GetMapping("mvmodify")
+	@RequestMapping("mvmodify")
 	public String moveModify(Model model) {//회원정보 수정 및 삭제 page
 		model.addAttribute("disable", false);//수정 가능
 		return "user/mypage";
@@ -96,7 +97,7 @@ public class UserController {
 	public String modifyMember(Member member, Model model, HttpSession session) {
 		Member curUser = (Member) session.getAttribute("userinfo");
 		member.setUserid(curUser.getUserid());
-
+		
 //		System.out.println("수정 전 id : "+member.getUserid());
 		service.update(member);
 		session.setAttribute("userinfo", member);//세션 멤버정보 갱신
@@ -129,17 +130,6 @@ public class UserController {
 		return map;
 	}
 	
-	//현재 로그인 정보 리턴
-	@GetMapping("userinfo")
-	public @ResponseBody HashMap<String, Member> userInfo(HttpSession session){
-		HashMap<String, Member> map = new HashMap<String, Member>();
-		Member curUser = (Member) session.getAttribute("userinfo");
-		
-		map.put("curUser", curUser);
-
-		return map;
-	}
-	
 	//멤버리스트
 	@GetMapping("memberlist")
 	public String listMember(Model model, String key, String word) {
@@ -153,5 +143,35 @@ public class UserController {
 			return "error/error";
 		}
 	}
-
+	
+	@GetMapping("mvsearchpw")
+	public String moveSearchPw() {
+		return "user/searchpw";
+	}
+	@GetMapping("searchpw")
+	public String searchPw(HttpSession session,HttpServletRequest request, String userid, String tel) {
+		if(userid == "" || tel == "") {
+			request.setAttribute("msg", "입력을 확인하고 다시 시도해주세요.");
+			return "user/searchpw";
+		}
+		Member user = service.search(userid);
+		String usertel = user.getTel();
+		session.setAttribute("userid", userid);
+		if(usertel.equals(tel)) {
+			return "user/newpw";
+		}else {
+			request.setAttribute("msg", " 일치하는 정보가 없습니다.");
+			return "error/error";
+		}
+	}
+	@PostMapping("updatepw")
+	public String updatePassword(Model model, HttpSession session, String userpwd) {
+		String userid = (String)session.getAttribute("userid");
+		Member member = service.search(userid);
+		member.setUserpwd(userpwd);
+		service.update(member);
+		session.invalidate();
+		return "user/login";//마이페이지로 이동
+	}
+	
 }
