@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.happyhouse.dao.IntrestAreaDao;
 import com.ssafy.happyhouse.dto.IntrestArea;
+import com.ssafy.happyhouse.dto.SidoCode;
 
 @Service
 public class IntrestAreaServiceImpl implements IntrestAreaService{
@@ -20,7 +21,11 @@ public class IntrestAreaServiceImpl implements IntrestAreaService{
 
 	@Override
 	public List<IntrestArea> searchAreaById(String userid) {
-		return intrestAreaDao.searchAreaById(userid);
+		List<IntrestArea> areaList = intrestAreaDao.searchAreaById(userid);
+		for(IntrestArea area : areaList) {
+			area.setSido_name(intrestAreaDao.searchAreaInfo(area));
+		}
+		return areaList;
 	}
 
 	@Override

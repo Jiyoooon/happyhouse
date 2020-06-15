@@ -3,14 +3,33 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ssafy.happyhouse.dao.IntrestAreaDao">
 	<insert id="insertArea" parameterType="IntrestArea">
-		insert	into area_intrest(area_userid, area_sido, area_gugun, area_dong)
-		values(#{area_userid}, #{area_sido}, #{area_gugun}, #{area_dong})
+		insert	into area_intrest(	area_userid
+									, area_sido
+									, area_gugun
+									, area_dong)
+		values(	#{area_userid}
+				, concat(#{area_sido}, '00000000')
+				, concat(#{area_gugun}, '00000')
+				, #{area_dong})
 	</insert>
 	
 	<select id="searchAreaById" parameterType="string" resultType="IntrestArea">
-		select	area_userid, area_sido, area_gugun, area_dong
+		select	area_userid
+				, area_sido
+				, area_gugun
+				, area_dong
 		from	area_intrest
 		where	area_userid = #{area_userid}
+	</select>
+	
+	<select id="searchAreaInfo" parameterType="IntrestArea" resultType="SidoCode">
+		select	left(sido_code, 2) as sido_code
+				, sido_name
+				, left(gugun_code, 5) as gugun_code
+				, gugun_name
+		from	sidocode, guguncode
+		where	sido_code 	= #{area_sido}
+			and	gugun_code 	= #{area_gugun}
 	</select>
 	
 	<delete id="deleteArea" parameterType="IntrestArea">
