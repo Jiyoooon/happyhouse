@@ -27,6 +27,9 @@
 </style>
 <script>
 
+//https://maps.googleapis.com/maps/api/directions/json?origin=37.53003578,126.8416988&destination=37.531768,126.846683&mode=transit&key=AIzaSyB1paHT4dztAMDp8SibuWWhBiOjQV5-jAQ
+
+
 //상세페이지 ajax\
 function moveMap(idx){
 	map.setZoom(17);
@@ -383,7 +386,7 @@ function addIntrestArea(){
 		</form>	
 		<c:if test="${userinfo ne null }"><!-- 로그인 한 상태라면 -->
 			<div id="intrest_area_list_section" class="form-group col-md-4 col-md-offset-4" style="float:right;">
-				<select id="intrest_area_select_box" name="area"></select>
+				<select id="intrest_area_select_box" class="form-control" name="area"></select>
 			</div>
 		</c:if>
 	</div>
@@ -464,7 +467,7 @@ function addIntrestArea(){
 								label: aptName,//지도에 써짐
 								title: aptName,//마우스 올라가면 뜸
 								alpha: 0.5
-								//여기에 버스&지하철역 까지의 거리? snippet으로?
+								// 여기에 버스&지하철역 까지의 거리? snippet으로?
 							});
 							
 							if(idx == 0){

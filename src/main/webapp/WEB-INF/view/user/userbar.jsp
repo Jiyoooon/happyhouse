@@ -45,7 +45,7 @@ li{
 	<div id="header" class="container" style="text-align:right;margin-right:0px ">
 		<c:choose>
 			<c:when test="${empty userinfo}">
-				<button type="button" class ="button" id="joinBtn"  onclick="document.location.href = '${root}/mvjoin';">회원가입</button>
+				<button type="button" class ="btn btn-info" id="joinBtn"  onclick="document.location.href = '${root}/mvjoin';">회원가입</button>
 				<button type="button" class ="button" id="loginBtn" onclick="document.location.href = '${root}/mvlogin';">로그인</button>
 			</c:when>
 			<c:otherwise>

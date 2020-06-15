@@ -5,7 +5,7 @@
 
 <c:if test="${empty userinfo}">
 	<% request.setAttribute("msg", "로그인 후 이용해주세요."); %>
-	<c:redirect url="${root}/mvlogin"/>
+	<c:redirect url="mvlogin"/>
 </c:if>
 
 <!-- 회원정보 조회 || 수정 및 삭제 page -->
