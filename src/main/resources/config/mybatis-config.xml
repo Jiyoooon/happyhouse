@@ -19,6 +19,8 @@
 	  <mapper resource="config/notice.xml"/>
 	  <mapper resource="config/user.xml"/>
 	  <mapper resource="config/qna.xml"/>
+	  <mapper resource="config/tradeinfo.xml"/>
+	  <mapper resource="config/area_intrest.xml"/>
    </mappers>
 </configuration>
 

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssafy.happyhouse.dao.IntrestAreaDao">
+	<insert id="insertArea" parameterType="IntrestArea">
+		insert	into area_intrest(area_userid, area_sido, area_gugun, area_dong)
+		values(#{area_userid}, #{area_sido}, #{area_gugun}, #{area_dong})
+	</insert>
+	
+	<select id="searchAreaById" parameterType="string" resultType="IntrestArea">
+		select	area_userid, area_sido, area_gugun, area_dong
+		from	area_intrest
+		where	area_userid = #{area_userid}
+	</select>
+	
+	<delete id="deleteArea" parameterType="IntrestArea">
+		delete 	from area_intrest
+		where 	area_userid	= #{area_userid}
+			and	area_dong 	= #{area_dong}	
+	</delete>
+</mapper>
