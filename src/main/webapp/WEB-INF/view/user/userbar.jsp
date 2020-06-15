@@ -26,29 +26,31 @@ li{
 </head>
 <body>
 <div id="header-wrapper">
-	<div id="header" class="container">
-		<div id="logo">
-        	<span class="icon icon-cog"></span>
-			<h1><a href="#">Happy House</a></h1>
+	<div id="header" class="container" style="text-align:right;margin-right:0px ">
 		<c:choose>
 			<c:when test="${empty userinfo}">
-				<button type="button" id="joinBtn" onclick="document.location.href = '${root}/mvjoin';">회원가입</button>
-				<button type="button" id="loginBtn" onclick="document.location.href = '${root}/mvlogin';">로그인</button>
+				<button type="button" class ="button" id="joinBtn"  onclick="document.location.href = '${root}/mvjoin';">회원가입</button>
+				<button type="button" class ="button" id="loginBtn" onclick="document.location.href = '${root}/mvlogin';">로그인</button>
 			</c:when>
 			<c:otherwise>
-			<strong>${userinfo.username}(${userinfo.userid})</strong>님 환영합니다.
+			<strong style="color:white">${userinfo.username}(${userinfo.userid}) 님 환영합니다.</strong>
 				<c:choose>
 				    <c:when test="${userinfo.userid eq 'admin' }">
-					<button type="button" id="mypageBtn" onclick="document.location.href = '${root}/memberlist?key=&word=';">회원정보조회</button>
-					<button type="button" id="logoutBtn" onclick="document.location.href = '${root}/logout';">로그아웃</button>
+					<button type="button" class ="button" id="mypageBtn" onclick="document.location.href = '${root}/memberlist?key=&word=';">회원정보조회</button>
+					<button type="button" class ="button" id="logoutBtn" onclick="document.location.href = '${root}/logout';">로그아웃</button>
 					</c:when>
 					<c:otherwise>
-					<button type="button" id="mypageBtn" onclick="document.location.href = '${root}/mypage';">마이페이지</button>
-					<button type="button" id="logoutBtn" onclick="document.location.href = '${root}/logout';">로그아웃</button>
+					<button type="button" class ="button" id="mypageBtn" onclick="document.location.href = '${root}/mypage';">마이페이지</button>
+					<button type="button" class ="button" id="logoutBtn" onclick="document.location.href = '${root}/logout';">로그아웃</button>
 					</c:otherwise>
 				</c:choose>
 			</c:otherwise>
 		</c:choose>
+	</div>
+	<div id="header">
+		<div id="logo">
+        	<span class="icon icon-cog"></span>
+			<h1><a href="#">Happy House</a></h1>
 		</div>
 		<div id="menu">
 			<ul>
@@ -58,18 +60,24 @@ li{
 				<li class=""><a href="#" accesskey="4" title="">오늘의 뉴스</a></li>
 			</ul>
 		</div>
-		<script>
-// 		var header = document.getElementById("menu");
-// 		var btns = header.getElementsByTagName("li");
-// 		for (var i = 0; i < btns.length; i++) {
-// 		  btns[i].addEventListener("click", function() {
-// 		  var current = document.getElementsByClassName("active");
-// 		  current[0].className = current[0].className.replace("active", "");
-// 		  this.className += "active";
-// 		  });
-// 		}
-		</script>
+		
 	</div>
+	
 </div>
 </body>
+		<script>
+				// Add active class to the current button (highlight it)
+				var header = document.getElementById("menu");
+				var btns = header.getElementsByTagName("li");
+				for (var i = 0; i < btns.length; i++) {
+					btns[i].addEventListener("click",
+							function() {
+								var current = document
+										.getElementsByClassName("active");
+								current[0].className = current[0].className
+										.replace("active", "");
+								this.className += "active";
+							});
+				}
+			</script>
 </html>

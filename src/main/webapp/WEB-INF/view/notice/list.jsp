@@ -42,7 +42,7 @@
 	  <c:if test="${userinfo.userid eq 'admin' }">
 	  <table class="table table-borderless">
 	  	<tr>
-	  		<td align="right"><button type="button" class="btn btn-link" onclick="javascript:movewrite();">글쓰기</button></td>
+	  		<td align="right"><button type="button" class="btn btn-primary" onclick="javascript:movewrite();">글쓰기</button></td>
 	  	</tr>
 	  </table>
 	  </c:if>
@@ -78,9 +78,9 @@
 	      </tr>
 	      <c:if test="${userinfo.userid == notice.userid}">
 	      <tr>
-	        <td colspan="2">
-			<a href="${root}/mvnoticemodify?bookno=${notice.bookno}">수정</a>
-			<a href="${root}/noticedelete?bookno=${notice.bookno}">삭제</a>
+	        <td colspan="2" >
+			<a class="button-small" href="${root}/mvnoticemodify?bookno=${notice.bookno}">수정</a>
+			<a class="button-small" href="${root}/noticedelete?bookno=${notice.bookno}">삭제</a>
 			</td>
 	      </tr>
 	      </c:if>

@@ -34,7 +34,7 @@
 		   	   qna_content = #{qna_content}, 
 		   	   qna_userid = #{qna_userid},
 		   	   reply_content = #{reply_content},
-<!-- 		   	   reply_datetime=#{reply_datetime}, -->
+		   	   reply_datetime=now(),
 		   	   reply_userid = #{reply_userid}
 		 where qna_no = #{qna_no}
 	</update>

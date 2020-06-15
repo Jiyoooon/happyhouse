@@ -13,6 +13,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900|Quicksand:400,700|Questrial" rel="stylesheet" />
+<link href="default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="fonts.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript">
 /*
  * 
@@ -36,7 +39,9 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
-<div class="container" align="center">
+<c:import url="userbar.jsp"/>
+
+<div class="wrapper" align="center">
 	<div class="col-lg-6" align="center">
 		<c:if test="${msg ne null }">${msg }</c:if>
 		<form id="memberform" method="get" action="${root}/searchpw">
@@ -55,6 +60,7 @@ $(document).ready(function() {
 		</form>
 	</div>
 </div>
+		<c:import url="footer.jsp"/>
 			
 			
 </body>
