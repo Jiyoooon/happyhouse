@@ -22,7 +22,23 @@ li{
 }
 
 </style>
-
+<script type="text/javascript">
+	var title = "";
+	if(window.location.href.indexOf("qna") > -1) title = "qna";
+	else if(window.location.href.indexOf("notice") > -1) title = "notice";
+	else title = "home";
+	
+	$(document).ready(function(){
+		$("#menu ul li").each(function(idx, vo){
+			if(vo.children[0].title == title){
+				vo.className = "active";
+			}else{
+				vo.className = "";
+			}
+		});
+	});
+	
+</script>
 </head>
 <body>
 <div id="header-wrapper">
@@ -54,10 +70,10 @@ li{
 		</div>
 		<div id="menu">
 			<ul>
-				<li class="active"><a href="${root}" accesskey="1" title="">홈페이지</a></li>
-				<li class=""><a href="${root}/noticelist?key=&word=" accesskey="2" title="">공지사항</a></li>
-				<li class=""><a href="${root}/qna" accesskey="3" title="">Q&A</a></li>
-				<li class=""><a href="#" accesskey="4" title="">오늘의 뉴스</a></li>
+				<li class="active" value="home"><a href="${root}" accesskey="1" title="home">홈페이지</a></li>
+				<li class="" value="notice"><a href="${root}/noticelist?key=&word=" accesskey="2" title="notice">공지사항</a></li>
+				<li class="" value="qna"><a href="${root}/qna" accesskey="3" title="qna">Q&A</a></li>
+				<li class="" value="news"><a href="#" accesskey="4" title="">오늘의 뉴스</a></li>
 			</ul>
 		</div>
 		
