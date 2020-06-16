@@ -15,15 +15,6 @@
 	#search_container{
 		width:100%;
 	}
-	#left{
-		float:left;
-		width:60%;
-	}
-	
-	#search_right{
-		float:right;
-		width:30%;
-	}
 </style>
 
 <script src="lib/proj4js.js"></script>
@@ -446,10 +437,9 @@ function addIntrestArea(){
 		</c:if>
 	</div>
 	<div class="row">
-			<div class="col-lg-4">
+			<div class="col-lg-3">
 			<div id="search_container">
 				<div class="form-group form-check" align="center" id="left">
-				<!-- <div id="search_left2"></div> -->
 				<div id="search_left">
 				  	<p align="center"><strong>거래내역</strong></p>
 				  	<!-- 상권데이터 드롭다운&체크박스 + => 집 선택시마다 가장 가까운 지하철역 & 버스정류장까지의 거리 보여주기-->
@@ -478,9 +468,8 @@ function addIntrestArea(){
 			</div>
 			</div>
 			</div>
-			<div class="col-lg-4">
-			
-				<p><strong>거래 상세 내역</strong></p>
+			<div class="col-lg-5">
+				<p align="center"><strong>거래 상세 내역</strong></p>
 					<!-- map start -->
 					<div id="map" style="width: 100%; height: 500px; margin: auto;"></div>
 					<script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
@@ -637,8 +626,7 @@ function addIntrestArea(){
 			</div>
 			<div class="col-lg-4">
 				<div id="school_and_subway">
-				  	<p ><strong>학교정보</strong></p>
-				  	<hr>
+				  	<p align="center"><strong>학교정보</strong></p>
 					<div id="school_section">
 						<table border="1" id="list">
 							  	<thead>
