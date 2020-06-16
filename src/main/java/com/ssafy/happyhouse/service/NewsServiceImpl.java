@@ -45,6 +45,7 @@ public class NewsServiceImpl implements NewsService {
 			newslist.add(news);
 //			System.out.println(news.toString());
 		}
+		return newslist;
 //		for (Element element : content) {
 //			String imglink = element.select("div[class=ranking_thumb] a img").attr("src");
 //			String title = element.select("div[class=ranking_headline] a").attr("title");
@@ -58,6 +59,5 @@ public class NewsServiceImpl implements NewsService {
 		
 //		System.out.println(content);
 //		System.out.println(newslist.size());
-		return newslist;
 	}
 }

@@ -6,9 +6,10 @@ public class SchoolInfo {
 	private String school_name;
 	private String grade;
 	private String head_branch;
+	private String state;
 	private String oper_state;
 	private String jibun_addr;
-	private String doro_add;
+	private String doro_addr;
 	private String lat;
 	private String lng;
 	private String sido_name;
@@ -19,17 +20,18 @@ public class SchoolInfo {
 		// TODO Auto-generated constructor stub
 	}
 
-	public SchoolInfo(String school_id, String school_name, String grade, String head_branch, String oper_state,
-			String jibun_addr, String doro_add, String lat, String lng, String sido_name, String gugun_name,
-			String dong) {
+	public SchoolInfo(String school_id, String school_name, String grade, String head_branch, String state,
+			String oper_state, String jibun_addr, String doro_addr, String lat, String lng, String sido_name,
+			String gugun_name, String dong) {
 		super();
 		this.school_id = school_id;
 		this.school_name = school_name;
 		this.grade = grade;
 		this.head_branch = head_branch;
+		this.state = state;
 		this.oper_state = oper_state;
 		this.jibun_addr = jibun_addr;
-		this.doro_add = doro_add;
+		this.doro_addr = doro_addr;
 		this.lat = lat;
 		this.lng = lng;
 		this.sido_name = sido_name;
@@ -69,6 +71,14 @@ public class SchoolInfo {
 		this.head_branch = head_branch;
 	}
 
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
 	public String getOper_state() {
 		return oper_state;
 	}
@@ -85,12 +95,12 @@ public class SchoolInfo {
 		this.jibun_addr = jibun_addr;
 	}
 
-	public String getDoro_add() {
-		return doro_add;
+	public String getDoro_addr() {
+		return doro_addr;
 	}
 
-	public void setDoro_add(String doro_add) {
-		this.doro_add = doro_add;
+	public void setDoro_addr(String doro_addr) {
+		this.doro_addr = doro_addr;
 	}
 
 	public String getLat() {
@@ -136,10 +146,12 @@ public class SchoolInfo {
 	@Override
 	public String toString() {
 		return "SchoolInfo [school_id=" + school_id + ", school_name=" + school_name + ", grade=" + grade
-				+ ", head_branch=" + head_branch + ", oper_state=" + oper_state + ", jibun_addr=" + jibun_addr
-				+ ", doro_add=" + doro_add + ", lat=" + lat + ", lng=" + lng + ", sido_name=" + sido_name
+				+ ", head_branch=" + head_branch + ", state=" + state + ", oper_state=" + oper_state + ", jibun_addr="
+				+ jibun_addr + ", doro_addr=" + doro_addr + ", lat=" + lat + ", lng=" + lng + ", sido_name=" + sido_name
 				+ ", gugun_name=" + gugun_name + ", dong=" + dong + "]";
 	}
+
+	
 	
 	
 }

@@ -211,7 +211,7 @@ function getDongAjax(){
 	$.get("${root}/api/trade/"+$("#gugun").val()+"/"+$("#dong").val()
 		,function(data, status){
 			tradeInfos = data;
-			
+
 			$.each(data, function(index, vo) {
 				addTradeMarker(vo.lat.substring(1, vo.lat.length-1)
 								, vo.lng.substring(1, vo.lng.length-1)
@@ -223,19 +223,41 @@ function getDongAjax(){
 	);// houseinfo get
 	
 	/*(오기석)한 부분*/	/*(오기석)한 부분*/	/*(오기석)한 부분*/	/*(오기석)한 부분*/
-
+// 		$.get("${root}/api/school/"+$("#gugun").val()+"/"+$("#dong").val()
+// 		,function(data, status){
+// 			schoolInfos = data;
+// 			console.log(schoolInfos);
+// 			$("#search_left").show();
+// 			$("#school_info").empty();
+// 			$.each(data, function(index, vo) {
+// 				addSchoolMarker(vo.lat, vo.lng, vo.school_name,vo.grade);//마크 찍기
+// 				let str = "<tr>"
+// 					+ "<td>"+vo.school_name+"</td>"
+// 					+ "<td>" + vo.state + "</td>"
+// 					+ "<td>" + vo.doro_addr +"</td>"
+// 					$("#school_info").append(str);
+// 			});//each
+// 		}//function
+// 		, "json"
+// 	);// schoolInfo get
 	$.get("${root}/api/school/"+$("#dong").val()
-			,function(data, status){
-				schoolInfos = data;
-				
-				$.each(data, function(index, vo) {
-					addSchoolMarker(vo.lat
-									, vo.lng
-									, vo.school_name,vo.grade);//마크 찍기
-				});//each
-			}//function
-			, "json"
-		);// SchoolInfo get
+		,function(data, status){
+			schoolInfos = data;
+			console.log(schoolInfos);
+			$("#search_left").show();
+			$("#school_info").empty();
+			$.each(data, function(index, vo) {
+				addSchoolMarker(vo.lat, vo.lng, vo.school_name,vo.grade);//마크 찍기
+				let str = "<tr>"
+					+ "<td>"+vo.school_name+"</td>"
+					+ "<td>" + vo.state + "</td>"
+					+ "<td>" + vo.doro_addr +"</td>"
+					$("#school_info").append(str);
+			});//each
+		}//function
+		, "json"
+	);// schoolInfo get
+	
 }
 $(document).ready(function(){
 	$("#sido").change(function() {
@@ -425,7 +447,7 @@ function addIntrestArea(){
 					  	<table border="1" id="list">
 						  	<thead>
 				  				<tr align="center">
-				  					<td  width=100px>아파트이름</td>
+				  					<td  width=200px>아파트이름</td>
 				  					<td  width=100px>지번</td>
 				  					<td  width=100px>건축년도</td>
 				  				</tr>
@@ -494,7 +516,6 @@ function addIntrestArea(){
 								alpha: 0.5
 							});
 							console.log(parseFloat(lat));
-							console.log(schoolMarkers);
 							marker.setMap(map);//맵에 마커를 붙이겠다
 							schoolMarkers.push(marker); //marker저장
 						}
@@ -545,6 +566,27 @@ function addIntrestArea(){
 					</script>
 					<!-- map end -->
 					<!-- search_detail -->
+			</div>
+			<div class="col-lg-4">
+				<div id="search_left">
+				  	<p ><strong>학교정보</strong></p>
+				  	<hr>
+					<div id="school_section">
+						<table border="1" id="list">
+							  	<thead>
+						  			<tr align="center">
+						  				<td  width=200px>학교이름</td>
+						  				<td  width=80px>설립형태</td>
+						  				<td  width=350px>주소</td>
+						  				
+						  			</tr>
+						  		</thead>
+						  	<tbody id="school_info" style="text-align: center"></tbody>
+						</table>
+							  	
+						 <div id="detail"></div>
+					 </div>	
+				 </div>
 			</div>
 	</div>
 </div>
