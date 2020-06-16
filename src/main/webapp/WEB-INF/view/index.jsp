@@ -440,7 +440,7 @@ function addIntrestArea(){
 			</div>
 			</div>
 			</div>
-			<div class="col-lg-8">
+			<div class="col-lg-4">
 			
 				<p><strong>거래 상세 내역</strong></p>
 					<!-- map start -->
@@ -464,7 +464,7 @@ function addIntrestArea(){
 							});
 							tradeIcon = new google.maps.MarkerImage("./img/trade_marker.png", null, null, null, new google.maps.Size(12,20));
 							/*오기석 한부분*//*오기석 한부분*//*오기석 한부분*//*오기석 한부분*//*오기석 한부분*/
-							schoolIcon = new google.maps.MarkerImage("./img/school_icon.png", null, null, null, new google.maps.Size(12,20));
+							schoolIcon = new google.maps.MarkerImage("./img/school_icon.jpg", null, null, null, new google.maps.Size(40,40));
 							var marker = new google.maps.Marker({position: multi, map: map});
 						}
 	
@@ -493,6 +493,7 @@ function addIntrestArea(){
 								sinppet: school_name,
 								alpha: 0.5
 							});
+							console.log(parseFloat(lat));
 							console.log(schoolMarkers);
 							marker.setMap(map);//맵에 마커를 붙이겠다
 							schoolMarkers.push(marker); //marker저장
