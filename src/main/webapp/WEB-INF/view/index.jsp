@@ -25,10 +25,26 @@
 		width:30%;
 	}
 </style>
+
+<script src="lib/proj4js.js"></script>
+
 <script>
+Proj4js.defs["EPSG:2097"] = "+proj=tmerc +lat_0=38 +lon_0=127 +k=1 +x_0=200000 +y_0=500000+ellps=bessel +units=m +no_defs";
+//좌표계
+let wsg = new Proj4js.Proj("WGS84");
+let utm = new Proj4js.Proj("EPSG:2097");
 
-//https://maps.googleapis.com/maps/api/directions/json?origin=37.53003578,126.8416988&destination=37.531768,126.846683&mode=transit&key=AIzaSyB1paHT4dztAMDp8SibuWWhBiOjQV5-jAQ
-
+//좌표변환 함수
+function changeCoord(c1, c2, p){
+	//console.log("들어온 좌표값!:",p);
+	//console.log(c1,c2);
+	let point = new Proj4js.Point(p);
+	let newCoord = Proj4js.transform(c1, c2, point);
+	
+	//console.log(newCoord);
+	return newCoord.toShortString();
+}
+		
 
 //상세페이지 ajax\
 function moveMap(idx){
@@ -470,6 +486,45 @@ function addIntrestArea(){
 					<script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
 					<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1paHT4dztAMDp8SibuWWhBiOjQV5-jAQ&callback=initMap"></script>
 					<script>
+						
+						//가까운 지하철역 거리계산
+						function getCloseSubwayAjax(houseCoord, stations){
+							let minDis = Number.MAX_VALUE;
+							
+							$.each(stations, function(idx, item){
+								let coord = changeCoord(utm, wsg, item.subwayXcnts+","+item.subwayYcnts).split(",");//좌표계 변경
+								
+								directionsService.route(
+						            {
+						              origin: {query: houseCoord}
+						              , destination: {query: coord[1]+","+coord[0]}
+						              , travelMode: 'TRANSIT'
+						            }
+						            , function(response, status) {
+						              if (status === 'OK') {
+						                  let dis = response.routes[0].legs[0].distance.text;
+						                  
+						                  if(parseFloat(dis.substring(0, dis.length-1)) < minDis){
+						                	  
+						                	  minDis = parseFloat(dis.substring(0, dis.length-1));
+						                	  let tmp = "<p>가까운 지하철 역 : "+item.statnNm+"("+item.subwayNm+")</p>"
+						            		  			+"<p>거리 : "+minDis+"km</p>"
+						            		  			+"<p>시간 : "+response.routes[0].legs[0].duration.text+"</p>";
+						            		  $("#school_and_subway #subway").html(tmp);
+						
+						                  }
+	
+						            	  console.log("지하철 역 : ", item.statnNm, item.subwayNm);
+						            	  console.log("거리 : ", response.routes[0].legs[0].distance.text);
+						            	  console.log("걸리는 시간 : ", response.routes[0].legs[0].duration.text);
+						              } else {
+						            	  console.log("no result : "+status);
+						              }
+						            }
+						        );
+							});
+						}
+					
 						var houseMarkers = [];
 						var tradeMarkers = [];
 						/*오기석 한부분*//*오기석 한부분*//*오기석 한부분*//*오기석 한부분*//*오기석 한부분*/
@@ -477,10 +532,13 @@ function addIntrestArea(){
 						var multi = {lat: 37.5665734, lng: 126.978179};
 						var map;
 						var tradeIcon;
+						var directionsService;//지하철~집 거리 구하는 api
 						/*오기석 한부분*//*오기석 한부분*//*오기석 한부분*//*오기석 한부분*//*오기석 한부분*//*오기석 한부분*/
 						var schoolIcon;
 						
 						function initMap() {
+							directionsService = new google.maps.DirectionsService();
+							
 							map = new google.maps.Map(document.getElementById('map'), {
 								center: multi, zoom: 12
 							});
@@ -538,8 +596,18 @@ function addIntrestArea(){
 							//마커를 클릭하면 줌 레벨 새로 설정(확대), map의 센터를 현재 클릭된 마크의 포지션으로 이동해라
 							marker.addListener('click', function() {
 								moveDetail(aptName, idx);
-								//map.setZoom(17);
-								//map.setCenter(marker.getPosition());
+								
+								//가장 가까운 지하철역 & 그 역까지의 거리 구하기
+								let coord = changeCoord(wsg, utm, tmpLng+','+tmpLat);//좌표변환
+								$.get("http://swopenapi.seoul.go.kr/api/subway/697379444c6b6a7936384261425749/json/nearBy/0/5/"+coord.replace(",", "/")
+									,function(data, status){
+										if(data.errorMessage.status == 200){
+											getCloseSubwayAjax(tmpLat+','+tmpLng, data.stationList);
+										}
+										
+									}//function
+									, "json"
+								);// close subway stations get
 							});
 							
 							marker.setMap(map);//맵에 마커를 붙이겠다 ==> map대신 null을 주면 marker 지울 수 있음
@@ -568,7 +636,7 @@ function addIntrestArea(){
 					<!-- search_detail -->
 			</div>
 			<div class="col-lg-4">
-				<div id="search_left">
+				<div id="school_and_subway">
 				  	<p ><strong>학교정보</strong></p>
 				  	<hr>
 					<div id="school_section">
@@ -585,6 +653,8 @@ function addIntrestArea(){
 						</table>
 							  	
 						 <div id="detail"></div>
+					 </div>
+					 <div id="subway" style="border: 1px solid black;">
 					 </div>	
 				 </div>
 			</div>
