@@ -131,6 +131,8 @@ function setIntrestList(){
 				+sido.sido_name+" "+sido.gugun_name+" "+item.area_dong+"</option>");
 	});
 }
+/*오기석 추가*//*오기석 추가*//*오기석 추가*//*오기석 추가*//*오기석 추가*//*오기석 추가*//*오기석 추가*/
+var schoolInfos;
 var tradeInfos;//시구군 선택 후 가져온 상권정보 저장
 var preSelected = 'all';
 var intrestArea;//관심지역 리스트 저장
@@ -219,6 +221,21 @@ function getDongAjax(){
 		}//function
 		, "json"
 	);// houseinfo get
+	
+	/*(오기석)한 부분*/	/*(오기석)한 부분*/	/*(오기석)한 부분*/	/*(오기석)한 부분*/
+
+	$.get("${root}/api/school/"+$("#dong").val()
+			,function(data, status){
+				schoolInfos = data;
+				
+				$.each(data, function(index, vo) {
+					addSchoolMarker(vo.lat
+									, vo.lng
+									, vo.school_name,vo.grade);//마크 찍기
+				});//each
+			}//function
+			, "json"
+		);// SchoolInfo get
 }
 $(document).ready(function(){
 	$("#sido").change(function() {
@@ -354,7 +371,7 @@ function addIntrestArea(){
 <body>
 <c:import url="user/userbar.jsp"/>
 <div class="wrapper">
-	<div id="welcome" class="container" >
+	<div id="welcome" class="container" style="padding-top : 0px;">
 		<div class="title">
 		  <h2>Welcome to our website</h2>
 		</div>
@@ -433,15 +450,21 @@ function addIntrestArea(){
 					<script>
 						var houseMarkers = [];
 						var tradeMarkers = [];
+						/*오기석 한부분*//*오기석 한부분*//*오기석 한부분*//*오기석 한부분*//*오기석 한부분*/
+						var schoolMarkers= [];
 						var multi = {lat: 37.5665734, lng: 126.978179};
 						var map;
 						var tradeIcon;
-
+						/*오기석 한부분*//*오기석 한부분*//*오기석 한부분*//*오기석 한부분*//*오기석 한부분*//*오기석 한부분*/
+						var schoolIcon;
+						
 						function initMap() {
 							map = new google.maps.Map(document.getElementById('map'), {
 								center: multi, zoom: 12
 							});
 							tradeIcon = new google.maps.MarkerImage("./img/trade_marker.png", null, null, null, new google.maps.Size(12,20));
+							/*오기석 한부분*//*오기석 한부분*//*오기석 한부분*//*오기석 한부분*//*오기석 한부분*/
+							schoolIcon = new google.maps.MarkerImage("./img/school_icon.png", null, null, null, new google.maps.Size(12,20));
 							var marker = new google.maps.Marker({position: multi, map: map});
 						}
 	
@@ -457,6 +480,22 @@ function addIntrestArea(){
 							
 							marker.setMap(map);//맵에 마커를 붙이겠다
 							tradeMarkers.push(marker);//marker저장
+						}
+						
+						/*(오기석)한 부분*//*(오기석)한 부분*//*(오기석)한 부분*//*(오기석)한 부분*//*(오기석)한 부분*//*(오기석)한 부분*/
+
+						function addSchoolMarker(lat, lng, school_name,grade){
+							var marker = new google.maps.Marker({
+								position: new google.maps.LatLng(parseFloat(lat),parseFloat(lng)),
+								//좌표 만들기
+								icon: schoolIcon,
+								title: school_name+"-"+grade,
+								sinppet: school_name,
+								alpha: 0.5
+							});
+							console.log(schoolMarkers);
+							marker.setMap(map);//맵에 마커를 붙이겠다
+							schoolMarkers.push(marker); //marker저장
 						}
 						
 						function addHouseMarker(tmpLat, tmpLng, aptName, idx) {

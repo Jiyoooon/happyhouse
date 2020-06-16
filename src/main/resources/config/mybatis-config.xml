@@ -21,6 +21,7 @@
 	  <mapper resource="config/qna.xml"/>
 	  <mapper resource="config/tradeinfo.xml"/>
 	  <mapper resource="config/area_intrest.xml"/>
+	  <mapper resource="config/school_loc.xml"/>
    </mappers>
 </configuration>
 
