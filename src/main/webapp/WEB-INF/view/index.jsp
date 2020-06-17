@@ -273,7 +273,9 @@ function getDongAjax(){
 			$.each(data, function(index, vo) {
 				addSchoolMarker(vo.lat, vo.lng, vo.school_name,vo.grade, index);//마크 찍기
 				let str = "<tr>"
-					+ "<td><a href='javascript:moveMap("+schoolMarkers+","+index+");>"+vo.school_name+"</a></td>"
+// 					+ "<td><a href=\"javascript:moveMap('"+schoolMarkers+"',"+index+");\">"+vo.school_name+"</a></td>"
+// 					+ "<td><a href='javascript:moveMap(schoolMarkers,"+index+");>'"+vo.school_name+"</a></td>"
+					+ "<td><a href='javascript:map.setCenter(schoolMarkers["+index+"].getPosition());'>"+vo.school_name+"</a></td>"
 					+ "<td>" + vo.state + "</td>"
 					+ "<td>" + vo.doro_addr +"</td>"
 					$("#school_info").append(str);
@@ -597,7 +599,7 @@ function addIntrestArea(){
 							});
 							
 							marker.addListener('click', function() {
-								moveMap(idx);
+								moveMap(schoolMarkers,idx);
 							});
 							
 							marker.setMap(map);//맵에 마커를 붙이겠다

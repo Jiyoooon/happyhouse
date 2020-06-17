@@ -19,18 +19,17 @@
 	<div class="container">
 		<div class="fbox1">
 		<span class="icon icon-map-marker"></span>
-			<span>1234 Fictional Road Suite #789
-			<br />Nashville TN 00000</span>
+			<span>서울 강남구 언주로 508 서울상록빌딩</span>
 		</div>
 		<div class="fbox1">
 			<span class="icon icon-phone"></span>
 			<span>
-				Telephone: +1 800 123 4657
+				Telephone: 02-1544-9001
 			</span>
 		</div>
 		<div class="fbox1">
 			<span class="icon icon-envelope"></span>
-			<span>businessname@business.com</span>
+			<span>ssafy@ssafy.com</span>
 		</div>
 	</div>
 </div>

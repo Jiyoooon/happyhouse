@@ -43,11 +43,11 @@ li{
 </head>
 <body>
 <div id="header-wrapper">
-	<div id="header" class="container" style="text-align:right;margin-right:0px ">
+	<div id="header" class="container" style="text-align:right;margin-right:0px ; padding : 10px;">
 		<c:choose>
 			<c:when test="${empty userinfo}">
 				<button type="button" class ="btn btn-info" id="joinBtn"  onclick="document.location.href = '${root}/mvjoin';">회원가입</button>
-				<button type="button" class ="button" id="loginBtn" onclick="document.location.href = '${root}/mvlogin';">로그인</button>
+				<button type="button" class ="btn btn-info" id="loginBtn" onclick="document.location.href = '${root}/mvlogin';">로그인</button>
 			</c:when>
 			<c:otherwise>
 			<strong style="color:white">${userinfo.username}(${userinfo.userid}) 님 환영합니다.</strong>
