@@ -27,8 +27,6 @@ let utm = new Proj4js.Proj("EPSG:2097");
 
 //좌표변환 함수
 function changeCoord(c1, c2, p){
-	//console.log("들어온 좌표값!:",p);
-	//console.log(c1,c2);
 	let point = new Proj4js.Point(p);
 	let newCoord = Proj4js.transform(c1, c2, point);
 	
@@ -38,18 +36,32 @@ function changeCoord(c1, c2, p){
 		
 
 //상세페이지 ajax\
-function moveMap(idx){
+function moveMap(markers, idx){
 	map.setZoom(17);
-	map.setCenter(houseMarkers[idx].getPosition());//선택한 집 위치로 맵 이동
+	map.setCenter(markers[idx].getPosition());//선택한 집 위치로 맵 이동
 }
-function moveDetail(aptname, idx){
+function moveDetail(aptname, idx, lat, lng){
+	
+	//가장 가까운 지하철역 & 그 역까지의 거리 구하기
+	let coord = changeCoord(wsg, utm, lng+','+lat);//좌표변환
+	$.get("http://swopenapi.seoul.go.kr/api/subway/697379444c6b6a7936384261425749/json/nearBy/0/5/"+coord.replace(",", "/")
+		,function(data, status){
+			if(data.errorMessage.status == 200){
+				getCloseSubwayAjax(lat+','+lng, data.stationList);
+			}
+			
+		}//function
+		, "json"
+	);// close subway stations get
+	
+	//동+동코드+아파트이름에 해당하는 거래정보 가져옴
 	var xhr = new XMLHttpRequest();
 	
 	xhr.onreadystatechange = function(){
 		if(xhr.readyState == xhr.DONE){
-			if(xhr.status === 200 || xhr.status === 201){//동+동코드+아파트이름에 해당하는 거래정보 
+			if(xhr.status === 200 || xhr.status === 201){
 				if(idx != undefined) {
-					moveMap(idx);
+					moveMap(houseMarkers, idx);
 				}
 				
 				setDetailInfo(JSON.parse(this.responseText), aptname);
@@ -153,7 +165,6 @@ function getSidoAjax(event, area){
 				$("#gugun").append("<option value='"+vo.gugun_code+"'>"+vo.gugun_name+"</option>");
 			});//each
 			
-			//console.log(area)
 			if(area != undefined){
 				$("#gugun").val(area.gugun);
 				getGugunAjax(event, area);
@@ -172,7 +183,6 @@ function getGugunAjax(event, area){
 				$("#dong").append("<option value='"+vo.dong+"'>"+vo.dong+"</option>");
 			});//each
 			
-			//console.log(area);
 			if(area != undefined){
 				$("#dong").val(area.dong);
 				getDongAjax();
@@ -183,6 +193,12 @@ function getGugunAjax(event, area){
 }
 
 function getDongAjax(){
+	//초기화
+	$("#search_left #house_section #list").show();
+	$("#search_left #house_section #detail").hide();
+	
+	$("#school_and_subway #subway").html('');
+	
 	//관심지역 여부 체크
 	setIntrestBtn($("#dong").val());
 	//상권
@@ -206,7 +222,7 @@ function getDongAjax(){
 				
 				addHouseMarker(vo.lat, vo.lng, vo.aptName, index);//마크 찍기
 				let str = "<tr>"
-				+ "<td><a href=\"javascript:moveDetail('"+vo.aptName+"', "+index+");\">" + vo.aptName + "</a></td>"
+				+ "<td><a href=\"javascript:moveDetail('"+vo.aptName+"', "+index+", "+vo.lat+", "+vo.lng+");\">" + vo.aptName + "</a></td>"
 				+ "<td>" + vo.jibun + "</td>"
 				+ "<td>" + vo.buildYear +"</td>"
 				$("#house_info").append(str);
@@ -247,16 +263,17 @@ function getDongAjax(){
 // 		}//function
 // 		, "json"
 // 	);// schoolInfo get
+
 	$.get("${root}/api/school/"+$("#dong").val()
 		,function(data, status){
 			schoolInfos = data;
-			console.log(schoolInfos);
+
 			$("#search_left").show();
 			$("#school_info").empty();
 			$.each(data, function(index, vo) {
-				addSchoolMarker(vo.lat, vo.lng, vo.school_name,vo.grade);//마크 찍기
+				addSchoolMarker(vo.lat, vo.lng, vo.school_name,vo.grade, index);//마크 찍기
 				let str = "<tr>"
-					+ "<td>"+vo.school_name+"</td>"
+					+ "<td><a href='javascript:moveMap("+schoolMarkers+","+index+");>"+vo.school_name+"</a></td>"
 					+ "<td>" + vo.state + "</td>"
 					+ "<td>" + vo.doro_addr +"</td>"
 					$("#school_info").append(str);
@@ -313,7 +330,7 @@ $(document).ready(function(){
 	//관심지역 selectBox change event
 	$("#intrest_area_select_box").change(function(){
 		let area = $("#intrest_area_select_box").val().split(" ");
-		//console.log(area[0], area[1], area[2]);
+
 		$("#sido").val(area[0]);
 		getSidoAjax(event, {gugun:area[1], dong:area[2]});
 	});
@@ -479,9 +496,13 @@ function addIntrestArea(){
 						//가까운 지하철역 거리계산
 						function getCloseSubwayAjax(houseCoord, stations){
 							let minDis = Number.MAX_VALUE;
+							let minTime, minIdx, minCoord;
+							let tmp = '';
+							let cnt = 0;
 							
 							$.each(stations, function(idx, item){
 								let coord = changeCoord(utm, wsg, item.subwayXcnts+","+item.subwayYcnts).split(",");//좌표계 변경
+								
 								
 								directionsService.route(
 						            {
@@ -494,18 +515,32 @@ function addIntrestArea(){
 						                  let dis = response.routes[0].legs[0].distance.text;
 						                  
 						                  if(parseFloat(dis.substring(0, dis.length-1)) < minDis){
-						                	  
 						                	  minDis = parseFloat(dis.substring(0, dis.length-1));
-						                	  let tmp = "<p>가까운 지하철 역 : "+item.statnNm+"("+item.subwayNm+")</p>"
-						            		  			+"<p>거리 : "+minDis+"km</p>"
-						            		  			+"<p>시간 : "+response.routes[0].legs[0].duration.text+"</p>";
-						            		  $("#school_and_subway #subway").html(tmp);
-						
+						                	  minIdx = idx;
+						                	  minTime = response.routes[0].legs[0].duration.text;
+						                	  minCoord = coord;
 						                  }
 	
-						            	  console.log("지하철 역 : ", item.statnNm, item.subwayNm);
-						            	  console.log("거리 : ", response.routes[0].legs[0].distance.text);
-						            	  console.log("걸리는 시간 : ", response.routes[0].legs[0].duration.text);
+					            		  if(++cnt == stations.length) {
+					            			  subwayMarker = new google.maps.Marker({
+													position: new google.maps.LatLng(parseFloat(minCoord[1]),parseFloat(minCoord[0])),
+													icon: {
+														path: google.maps.SymbolPath.CIRCLE,
+														scale: 0
+													},
+													title: stations[minIdx].statnNm+"-"+stations[minIdx].subwayNm
+											  });
+					            			  
+					            			  subwayMarker.setMap(map);
+					            			  
+					            			  tmp = "<p><span>가까운 지하철 역 : </span><a href='javascript:map.setZoom(17);map.setCenter(subwayMarker.getPosition());'>"
+					            			  		+stations[minIdx].statnNm+"("+stations[minIdx].subwayNm+")</a></p>"
+					            		  			+"<p>거리 : "+minDis+"km</p>"
+					            		  			+"<p>시간 : "+minTime+"</p>";
+					            			  $("#school_and_subway #subway").html(tmp);
+					            			  
+					            		  }
+						              
 						              } else {
 						            	  console.log("no result : "+status);
 						              }
@@ -514,16 +549,14 @@ function addIntrestArea(){
 							});
 						}
 					
+						var subwayMarker;
 						var houseMarkers = [];
 						var tradeMarkers = [];
-						/*오기석 한부분*//*오기석 한부분*//*오기석 한부분*//*오기석 한부분*//*오기석 한부분*/
 						var schoolMarkers= [];
 						var multi = {lat: 37.5665734, lng: 126.978179};
 						var map;
-						var tradeIcon;
+						var tradeIcon, schoolIcon, subwayIcon;
 						var directionsService;//지하철~집 거리 구하는 api
-						/*오기석 한부분*//*오기석 한부분*//*오기석 한부분*//*오기석 한부분*//*오기석 한부분*//*오기석 한부분*/
-						var schoolIcon;
 						
 						function initMap() {
 							directionsService = new google.maps.DirectionsService();
@@ -532,8 +565,8 @@ function addIntrestArea(){
 								center: multi, zoom: 12
 							});
 							tradeIcon = new google.maps.MarkerImage("./img/trade_marker.png", null, null, null, new google.maps.Size(12,20));
-							/*오기석 한부분*//*오기석 한부분*//*오기석 한부분*//*오기석 한부분*//*오기석 한부분*/
 							schoolIcon = new google.maps.MarkerImage("./img/school_icon.jpg", null, null, null, new google.maps.Size(40,40));
+							//subwayIcon = new google.maps.MarkerImage("./img/subway_icon.png", null, null, null, new google.maps.Size(30,30));
 							var marker = new google.maps.Marker({position: multi, map: map});
 						}
 	
@@ -553,7 +586,7 @@ function addIntrestArea(){
 						
 						/*(오기석)한 부분*//*(오기석)한 부분*//*(오기석)한 부분*//*(오기석)한 부분*//*(오기석)한 부분*//*(오기석)한 부분*/
 
-						function addSchoolMarker(lat, lng, school_name,grade){
+						function addSchoolMarker(lat, lng, school_name,grade, idx){
 							var marker = new google.maps.Marker({
 								position: new google.maps.LatLng(parseFloat(lat),parseFloat(lng)),
 								//좌표 만들기
@@ -562,7 +595,11 @@ function addIntrestArea(){
 								sinppet: school_name,
 								alpha: 0.5
 							});
-							console.log(parseFloat(lat));
+							
+							marker.addListener('click', function() {
+								moveMap(idx);
+							});
+							
 							marker.setMap(map);//맵에 마커를 붙이겠다
 							schoolMarkers.push(marker); //marker저장
 						}
@@ -584,19 +621,7 @@ function addIntrestArea(){
 							}
 							//마커를 클릭하면 줌 레벨 새로 설정(확대), map의 센터를 현재 클릭된 마크의 포지션으로 이동해라
 							marker.addListener('click', function() {
-								moveDetail(aptName, idx);
-								
-								//가장 가까운 지하철역 & 그 역까지의 거리 구하기
-								let coord = changeCoord(wsg, utm, tmpLng+','+tmpLat);//좌표변환
-								$.get("http://swopenapi.seoul.go.kr/api/subway/697379444c6b6a7936384261425749/json/nearBy/0/5/"+coord.replace(",", "/")
-									,function(data, status){
-										if(data.errorMessage.status == 200){
-											getCloseSubwayAjax(tmpLat+','+tmpLng, data.stationList);
-										}
-										
-									}//function
-									, "json"
-								);// close subway stations get
+								moveDetail(aptName, idx, tmpLat, tmpLng);
 							});
 							
 							marker.setMap(map);//맵에 마커를 붙이겠다 ==> map대신 null을 주면 marker 지울 수 있음
