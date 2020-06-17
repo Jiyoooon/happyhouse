@@ -19,7 +19,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 	
 <title>vue-qna</title>
-<link href=./js/app.97bade12.js rel=preload as=script>
+<link href=./js/app.b3295bba.js rel=preload as=script>
 <link href=./js/chunk-vendors.a6266a34.js rel=preload as=script>
 </head>
 <body>
@@ -30,7 +30,7 @@
 	</noscript>
 	<div id=app class="container"></div>
 	<script src=./js/chunk-vendors.a6266a34.js></script>
-	<script src=./js/app.97bade12.js></script>
+	<script src=./js/app.b3295bba.js></script>
 	<%@ include file="../user/footer.jsp" %>
 </body>
 </html>

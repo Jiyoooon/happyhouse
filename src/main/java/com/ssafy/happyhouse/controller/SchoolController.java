@@ -20,7 +20,7 @@ public class SchoolController {
 	public List<SchoolInfo> findSchoolByDong(@PathVariable("dong") String dong){
 		
 		List<SchoolInfo> schools = schoolInfoService.searchSchoolByDong(dong);
-		System.out.println(schools.toString());
+//		System.out.println(schools.toString());
 		return schools;
 	}
 }
