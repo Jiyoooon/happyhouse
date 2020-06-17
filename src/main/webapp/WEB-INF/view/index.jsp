@@ -565,8 +565,8 @@ function addIntrestArea(){
 							map = new google.maps.Map(document.getElementById('map'), {
 								center: multi, zoom: 12
 							});
-							tradeIcon = new google.maps.MarkerImage("./img/trade_marker.png", null, null, null, new google.maps.Size(12,20));
-							schoolIcon = new google.maps.MarkerImage("./img/school_icon.jpg", null, null, null, new google.maps.Size(40,40));
+							tradeIcon = new google.maps.MarkerImage("./img/trade_marker2.png", null, null, null, new google.maps.Size(20,30));
+							schoolIcon = new google.maps.MarkerImage("./img/school_icon2.png", null, null, null, new google.maps.Size(20,30));
 							//subwayIcon = new google.maps.MarkerImage("./img/subway_icon.png", null, null, null, new google.maps.Size(30,30));
 							var marker = new google.maps.Marker({position: multi, map: map});
 						}
@@ -688,14 +688,5 @@ function addIntrestArea(){
 	<br>
 </script>
 
-<!-- 
-<table align="center">
-		<tr><td>주택명 : {aptName}</td></tr>
-		<tr><td>거래금액 : {dealAmount}</td></tr>
-		<tr><td>전용면적 : {area}</td></tr>
-		<tr><td>거래일 : {dealYear}년 {dealMonth}월  {dealDay}일</td></tr>
-	</table>
-
- -->
 </body>
 </html>
