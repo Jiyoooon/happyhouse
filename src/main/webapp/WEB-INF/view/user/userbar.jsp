@@ -46,19 +46,19 @@ li{
 	<div id="header" class="container" style="text-align:right;margin-right:0px ; padding : 10px;">
 		<c:choose>
 			<c:when test="${empty userinfo}">
-				<button type="button" class ="btn btn-info" id="joinBtn"  onclick="document.location.href = '${root}/mvjoin';">회원가입</button>
-				<button type="button" class ="btn btn-info" id="loginBtn" onclick="document.location.href = '${root}/mvlogin';">로그인</button>
+				<button type="button" class ="button rounded" id="joinBtn"  onclick="document.location.href = '${root}/mvjoin';">회원가입</button>
+				<button type="button" class ="button rounded" id="loginBtn" onclick="document.location.href = '${root}/mvlogin';">로그인</button>
 			</c:when>
 			<c:otherwise>
 			<strong style="color:white">${userinfo.username}(${userinfo.userid}) 님 환영합니다.</strong>
 				<c:choose>
 				    <c:when test="${userinfo.userid eq 'admin' }">
-					<button type="button" class ="button" id="mypageBtn" onclick="document.location.href = '${root}/memberlist?key=&word=';">회원정보조회</button>
-					<button type="button" class ="button" id="logoutBtn" onclick="document.location.href = '${root}/logout';">로그아웃</button>
+					<button type="button" class ="button rounded" id="mypageBtn" onclick="document.location.href = '${root}/memberlist?key=&word=';">회원정보조회</button>
+					<button type="button" class ="button rounded" id="logoutBtn" onclick="document.location.href = '${root}/logout';">로그아웃</button>
 					</c:when>
 					<c:otherwise>
-					<button type="button" class ="button" id="mypageBtn" onclick="document.location.href = '${root}/mypage';">마이페이지</button>
-					<button type="button" class ="button" id="logoutBtn" onclick="document.location.href = '${root}/logout';">로그아웃</button>
+					<button type="button" class ="button rounded" id="mypageBtn" onclick="document.location.href = '${root}/mypage';">마이페이지</button>
+					<button type="button" class ="button rounded" id="logoutBtn" onclick="document.location.href = '${root}/logout';">로그아웃</button>
 					</c:otherwise>
 				</c:choose>
 			</c:otherwise>

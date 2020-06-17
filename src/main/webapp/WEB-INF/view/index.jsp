@@ -81,7 +81,7 @@ function moveDetail(aptname, idx, lat, lng){
 //상세페이지 화면 출력
 function setDetailInfo(deals, aptname){
 	var template = document.querySelector("#detailTemplate")
-	var detailTemp = "<button type='button' class='btn btn-light btn-sm' onclick='goHouseList();'>뒤로</button>";
+	var detailTemp = "<button type='button' class='btn btn-light m-2' onclick='goHouseList();'>뒤로</button>";
 	
 	$("#search_left #house_section #list").hide();
 	deals.forEach(function(deal){
@@ -89,9 +89,8 @@ function setDetailInfo(deals, aptname){
 		   								.replace("{dealAmount}",deal.dealAmount)
 		   								.replace("{area}",deal.area)
 									   .replace("{dealYear}",deal.dealYear)
-									   .replace("{dealMonth}",deal.dealMonth)
-									   .replace("{dealDay}",deal.dealDay)
-										.replace("{type}",deal.type);
+									   .replace("{dealMonth}",deal.dealMonth.length == 1 ? '0'+deal.dealMonth : deal.dealMonth)
+									   .replace("{dealDay}",deal.dealDay);
 	});
 	
 	$("#search_left #house_section #detail").html(detailTemp);
@@ -275,7 +274,7 @@ function getDongAjax(){
 				let str = "<tr>"
 // 					+ "<td><a href=\"javascript:moveMap('"+schoolMarkers+"',"+index+");\">"+vo.school_name+"</a></td>"
 // 					+ "<td><a href='javascript:moveMap(schoolMarkers,"+index+");>'"+vo.school_name+"</a></td>"
-					+ "<td><a href='javascript:map.setCenter(schoolMarkers["+index+"].getPosition());'>"+vo.school_name+"</a></td>"
+					+ "<td><a href='javascript:map.setZoom(17);map.setCenter(schoolMarkers["+index+"].getPosition());'>"+vo.school_name+"</a></td>"
 					+ "<td>" + vo.state + "</td>"
 					+ "<td>" + vo.doro_addr +"</td>"
 					$("#school_info").append(str);
@@ -321,7 +320,7 @@ $(document).ready(function(){
 				}
 				$("#trade_selected").html('');
 			}else{
-				$("#trade_selected").append("<button type='button' class='btn btn-light btn-sm' onclick='removeTrade(this);'>"+value+"</button>");
+				$("#trade_selected").append("<button type='button' class='btn btn-light btn-sm m-1' onclick='removeTrade(this);'>"+value+"</button>");
 				addTradeMarkers(value);
 			}
 			
@@ -458,23 +457,22 @@ function addIntrestArea(){
 	<div class="row">
 			<div class="col-lg-3">
 			<div id="search_container">
-				<div class="form-group form-check" align="center" id="left">
-				<div id="search_left">
+				<div class="form-group form-check" id="left">
+				<div id="search_left" align="center">
 				  	<p align="center"><strong>거래내역</strong></p>
-				  	<!-- 상권데이터 드롭다운&체크박스 + => 집 선택시마다 가장 가까운 지하철역 & 버스정류장까지의 거리 보여주기-->
-				  	<div id="trade_section" style="display:none" multiple>
+				  	<div id="trade_section" style="display:none" >
 				  		<p>상권정보 선택</p>
 				  		<select id="trade_select_box" name="trade"></select>
 				  		<div id="trade_selected"></div>
 				  	</div>
 				  	<hr>
 				  	<div id="house_section">
-					  	<table border="1" id="list">
-						  	<thead>
+					  	<table id="list" class="table table-hover">
+						  	<thead style="background-color:#929fb1; color:white;" >
 				  				<tr align="center">
-				  					<td  width=200px>아파트이름</td>
-				  					<td  width=100px>지번</td>
-				  					<td  width=100px>건축년도</td>
+				  					<th  width=200px>아파트이름</td>
+				  					<th  width=100px>지번</td>
+				  					<th  width=100px>건축년도</td>
 				  				</tr>
 				  			</thead>
 				  			<tbody id="house_info"></tbody>
@@ -535,10 +533,11 @@ function addIntrestArea(){
 					            			  
 					            			  subwayMarker.setMap(map);
 					            			  
-					            			  tmp = "<p><span>가까운 지하철 역 : </span><a href='javascript:map.setZoom(17);map.setCenter(subwayMarker.getPosition());'>"
-					            			  		+stations[minIdx].statnNm+"("+stations[minIdx].subwayNm+")</a></p>"
-					            		  			+"<p>거리 : "+minDis+"km</p>"
-					            		  			+"<p>시간 : "+minTime+"</p>";
+											  tmp = "<div class='card-body'>"
+											  		+"<h4 class='card-title'>가까운 지하철역 - "+stations[minIdx].statnNm+"("+stations[minIdx].subwayNm+")</h4>"
+											  		+"<p class='card-text'>거리 : "+minDis+"km / 시간 : "+minTime+"</p>"
+											  		+"<a class='card-link' href='javascript:map.setZoom(16);map.setCenter(subwayMarker.getPosition());'>지도보기</a>";
+					            			  
 					            			  $("#school_and_subway #subway").html(tmp);
 					            			  
 					            		  }
@@ -652,25 +651,24 @@ function addIntrestArea(){
 					<!-- search_detail -->
 			</div>
 			<div class="col-lg-4">
-				<div id="school_and_subway">
+				<div id="school_and_subway" class="m-2">
 				  	<p align="center"><strong>학교정보</strong></p>
 					<div id="school_section">
-						<table border="1" id="list">
-							  	<thead>
-						  			<tr align="center">
-						  				<td  width=200px>학교이름</td>
-						  				<td  width=80px>설립형태</td>
-						  				<td  width=350px>주소</td>
-						  				
-						  			</tr>
-						  		</thead>
-						  	<tbody id="school_info" style="text-align: center"></tbody>
-						</table>
-							  	
-						 <div id="detail"></div>
-					 </div>
-					 <div id="subway" style="border: 1px solid black;">
-					 </div>	
+						<table id="list" class="table table-hover">
+						  	<thead style="background-color:#929fb1; color:white;" >
+					  			<tr align="center">
+					  				<th  width="35%">학교이름</td>
+					  				<th  width="20%">설립형태</td>
+					  				<th  width="45%">주소</td>
+					  			</tr>
+					  		</thead>
+						  	<tbody id="school_info" style="text-align: center" class="thead-light"></tbody>
+						</table>  	
+						<div id="detail"></div>
+					</div>
+					<hr>
+					<div id="subway" class="bg-light card rounded"></div>
+					 
 				 </div>
 			</div>
 	</div>
@@ -681,14 +679,23 @@ function addIntrestArea(){
 
 
 <script type="search_template" id="detailTemplate">
-	<table align="center">
+	<div>
+		<h4>{aptName}</h4>
+		<span>거래금액 - {dealAmount}</span><br>
+		<span>전용면적 - {area}</span><br>
+		<time style="font-weight:bold;">{dealYear}. {dealMonth}. {dealDay}</time>
+	</div>
+	<br>
+</script>
+
+<!-- 
+<table align="center">
 		<tr><td>주택명 : {aptName}</td></tr>
 		<tr><td>거래금액 : {dealAmount}</td></tr>
 		<tr><td>전용면적 : {area}</td></tr>
 		<tr><td>거래일 : {dealYear}년 {dealMonth}월  {dealDay}일</td></tr>
-		<tr><td>거래타입 : {type}</td></tr>
 	</table>
-	<br>
-</script>
+
+ -->
 </body>
 </html>
