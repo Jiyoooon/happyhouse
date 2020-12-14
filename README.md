@@ -23,7 +23,7 @@
 
 - **메인화면**
 
-  ![0](capture/mainpage.png)
+  ![0](capture/mainpage.jpg)
 
   
 
